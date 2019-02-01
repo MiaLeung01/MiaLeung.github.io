@@ -294,6 +294,184 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/01/一次联调导出400的原因/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/01/一次联调导出400的原因/" itemprop="url">一次联调导出400的原因</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-01T16:37:52+08:00">
+                2019-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作中碰到的问题/" itemprop="url" rel="index">
+                    <span itemprop="name">工作中碰到的问题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天跟后端联调的时候遇到了个 400 Bad Request 问题，柯南模式又要开启啦。</p>
+<h3 id="前端关于导出（文件下载）："><a href="#前端关于导出（文件下载）：" class="headerlink" title="前端关于导出（文件下载）："></a>前端关于导出（文件下载）：</h3><ul>
+<li>前端导出的方法有哪些？<ol>
+<li>使用<code>&lt;a&gt;</code> 标签</li>
+<li>window.open(url)</li>
+<li>form 表单<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> container = <span class="built_in">document</span>.getElementById(<span class="string">'containerId'</span>);</span><br><span class="line"><span class="keyword">if</span>(!container) &#123;</span><br><span class="line">  container = documnent.createElement(<span class="string">'div'</span>);</span><br><span class="line">  container.id = <span class="string">'containerId'</span>;</span><br><span class="line">  container.style.height = <span class="string">'0px'</span>;</span><br><span class="line">  container.style.overflow = <span class="string">'hidden'</span>;</span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(container);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="400-的原因："><a href="#400-的原因：" class="headerlink" title="400 的原因："></a>400 的原因：</h3><p>  400指的的是请求无效（请求有语法问题或者不能满足请求）。400 有两类，一是 BadRequest “错误的请求”， 二是 Invalid Hostname “不存在的域名”。<br>  其中 BadRequest 产生的原因一是前端提交数据的字段名称或者是字段类型和后台的实体类不一致，导致无法封装，二是前端后端约定的参数类型不一致，一个是 json 一个是 form。</p>
+<blockquote>
+<p>在 SpringMVC 中的 Action 中处理前端 Ajax 请求传过来的 json 数据直接转成对应的实体类时出错会报 400 Bad Request，后端也不报错。</p>
+<ol>
+<li>一般最常见的就是后台的实体类 bean 与前端传的类型不匹配，如你的 javabean 中有定义了 Date 类型和 int 类型的成员变量，导致转化器在把 json 数据转化成 bean 时不能转化。</li>
+<li>log4j的配置文件里错误将部分log打为Info级别所致</li>
+<li>要返回 json 的却忘了加 @ResponseBody</li>
+<li>ajax 请求的连接后边忘了加参数,如url:basePath + “kscj/unbill.do?jqid=”+jqids</li>
+<li>传了非实体bean属性的参数过来。</li>
+<li>controller指定的参数名称与前台不一致<br>作者：陌上桑花开花<br>原文：<a href="https://blog.csdn.net/u014079773/article/details/51865178/" target="_blank" rel="noopener">https://blog.csdn.net/u014079773/article/details/51865178/</a> </li>
+</ol>
+</blockquote>
+<h4 id="今天遇到的问题原因是上述的第一个，参数需要传日期，前端传的-String-后端定义的-Date-类型。"><a href="#今天遇到的问题原因是上述的第一个，参数需要传日期，前端传的-String-后端定义的-Date-类型。" class="headerlink" title="今天遇到的问题原因是上述的第一个，参数需要传日期，前端传的 String, 后端定义的 Date 类型。"></a>今天遇到的问题原因是上述的第一个，参数需要传日期，前端传的 String, 后端定义的 Date 类型。</h4><blockquote>
+<p>解决办法:</p>
+<ol>
+<li>把实体类的javabean里边的类型都改成 string 类型。</li>
+<li>在对应的实体类的对应的非字符串类型的变量的setter方法中传入string类型的，然后在里边用 SimpleDateFormat 或者Integer进行转化。</li>
+<li>在实体类的日期属性上加@DateTimeFormat(pattern=”yyyy-MM-dd”)注解。<br>详细的见原文<br>作者：陌上桑花开花<br>原文：<a href="https://blog.csdn.net/u014079773/article/details/51865178/" target="_blank" rel="noopener">https://blog.csdn.net/u014079773/article/details/51865178/</a> </li>
+</ol>
+</blockquote>
+<p>后端选择了 3 来解决这个问题，400 变成 200~</p>
+<h3 id="P-S"><a href="#P-S" class="headerlink" title="P.S."></a>P.S.</h3><ul>
+<li><p>A. form 表单提交和 Json 格式提交后端都是怎么区分处理的？<br>Q. 就我今天看到的后端代码来说，好像就是一个加上一个注解 @（json）, 一个不加。估计框架给处理了。</p>
+</li>
+<li><p>A. Http错误码整理。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/1月读过的书/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -554,7 +732,11 @@
 <h2 id="React-生命周期"><a href="#React-生命周期" class="headerlink" title="React 生命周期"></a>React 生命周期</h2><p>getDefaultProps<br>getInitialState<br>componentWillMount<br>render<br>componentDidMount<br>shouldComponentUpdate(nextProps, nextState)             componentWillReceiveProps(nextProps)<br>componentWillUpdate  在组件将要更新时才调用，此时可以修改state<br>render<br>componentDidUpdate<br>componentWillUnmount</p>
 <hr>
 <p>shouldComponentUpdate -&gt; react性能优化非常重要的一环。组件接受新的state或者props时调用，我们可以设置在此对比前后两个props和state是否相同，如果相同则返回false阻止更新，因为相同的属性状态一定会生成相同的dom树，这样就不需要创造新的dom树和旧的dom树进行diff算法对比，节省大量性能，尤其是在dom结构复杂的时候</p>
-<h2 id="React-diff-算法"><a href="#React-diff-算法" class="headerlink" title="React diff 算法"></a>React diff 算法</h2>
+<h2 id="React-diff-算法"><a href="#React-diff-算法" class="headerlink" title="React diff 算法"></a>React diff 算法</h2><ul>
+<li>react 如何计算本次更新和下一次更新的不同，做到只更新变化的节点的？有什么策略？</li>
+<li>render 方法中描述的 UI 是真实的 dom 结点还是虚拟的 dom 结点呢？React 是怎么样表现这个结点的？</li>
+</ul>
+
           
         
       
@@ -1341,7 +1523,7 @@ result += curChar;
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1352,7 +1534,7 @@ result += curChar;
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -1363,7 +1545,7 @@ result += curChar;
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

@@ -102,7 +102,7 @@
 <meta property="og:site_name" content="Mia 豆豆&#39;s Blog">
 <meta property="og:description" content="React 介绍React 是什么？React不是一个MVC框架，而是一个用于构建组件化UI的库，是一个前端界面开发工具。React 起源于 Facebook 的内部项目，用来架设 Instagram 的网站，并于 2013 年 5 月开源。 React 设计思想虚拟DOM：在React的实际的使用中，需要根据不同的数据展现不同的UI,当数据变化时，React会重新构建整个DOM树，然后将当前的D">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2019-01-31T14:57:59.000Z">
+<meta property="og:updated_time" content="2019-02-01T16:00:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react">
 <meta name="twitter:description" content="React 介绍React 是什么？React不是一个MVC框架，而是一个用于构建组件化UI的库，是一个前端界面开发工具。React 起源于 Facebook 的内部项目，用来架设 Instagram 的网站，并于 2013 年 5 月开源。 React 设计思想虚拟DOM：在React的实际的使用中，需要根据不同的数据展现不同的UI,当数据变化时，React会重新构建整个DOM树，然后将当前的D">
@@ -388,7 +388,11 @@
 <h2 id="React-生命周期"><a href="#React-生命周期" class="headerlink" title="React 生命周期"></a>React 生命周期</h2><p>getDefaultProps<br>getInitialState<br>componentWillMount<br>render<br>componentDidMount<br>shouldComponentUpdate(nextProps, nextState)             componentWillReceiveProps(nextProps)<br>componentWillUpdate  在组件将要更新时才调用，此时可以修改state<br>render<br>componentDidUpdate<br>componentWillUnmount</p>
 <hr>
 <p>shouldComponentUpdate -&gt; react性能优化非常重要的一环。组件接受新的state或者props时调用，我们可以设置在此对比前后两个props和state是否相同，如果相同则返回false阻止更新，因为相同的属性状态一定会生成相同的dom树，这样就不需要创造新的dom树和旧的dom树进行diff算法对比，节省大量性能，尤其是在dom结构复杂的时候</p>
-<h2 id="React-diff-算法"><a href="#React-diff-算法" class="headerlink" title="React diff 算法"></a>React diff 算法</h2>
+<h2 id="React-diff-算法"><a href="#React-diff-算法" class="headerlink" title="React diff 算法"></a>React diff 算法</h2><ul>
+<li>react 如何计算本次更新和下一次更新的不同，做到只更新变化的节点的？有什么策略？</li>
+<li>render 方法中描述的 UI 是真实的 dom 结点还是虚拟的 dom 结点呢？React 是怎么样表现这个结点的？</li>
+</ul>
+
       
     </div>
     
@@ -505,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -516,7 +520,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -527,7 +531,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
