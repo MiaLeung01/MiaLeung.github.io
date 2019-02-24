@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
+<meta name="description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树   递归 123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;  非递归 1234567">
 <meta name="keywords" content="树">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树遍历">
 <meta property="og:url" content="http://yoursite.com/2019/02/24/二叉树遍历1/index.html">
 <meta property="og:site_name" content="Mia 豆豆&#39;s Blog">
-<meta property="og:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
+<meta property="og:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树   递归 123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;  非递归 1234567">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2019-02-24T01:53:29.000Z">
+<meta property="og:updated_time" content="2019-02-24T02:02:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树遍历">
-<meta name="twitter:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
+<meta name="twitter:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树   递归 123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;  非递归 1234567">
 
 
 
@@ -384,36 +384,42 @@
 
       
         <h3 id="深度优先遍历-DFS-Depth-First-Search"><a href="#深度优先遍历-DFS-Depth-First-Search" class="headerlink" title="深度优先遍历 DFS( Depth First Search )"></a>深度优先遍历 DFS( Depth First Search )</h3><ol>
-<li>前序遍历<br>根 -&gt; 左子树 -&gt; 右子树<ul>
-<li>递归<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function DFS1(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  console.log(root.val);</span><br><span class="line">  DFS1(root.left);</span><br><span class="line">  DFS1(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>前序遍历<br>根 -&gt; 左子树 -&gt; 右子树</li>
+</ol>
+<ul>
+<li><p>递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function DFS1(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  console.log(root.val);</span><br><span class="line">  DFS1(root.left);</span><br><span class="line">  DFS1(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function DFS2(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  const st = [root];</span><br><span class="line">  while(st.length&gt;0) &#123;</span><br><span class="line">    const top = st.pop();</span><br><span class="line">    console.log(top.val);</span><br><span class="line">    if(st.rightChild) &#123;</span><br><span class="line">      st.push(st.rightChild);</span><br><span class="line">    &#125;</span><br><span class="line">    if(st.leftChild) &#123;</span><br><span class="line">      st.push(st.leftChild);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
-</ol>
-<p>  -非递归<br>  function DFS2(root) {<br>    if(!root) return null;<br>    const st = [root];<br>    while(st.length&gt;0) {<br>      const top = st.pop();<br>      console.log(top.val);<br>      if(st.rightChild) {<br>        st.push(st.rightChild);<br>      }<br>      if(st.leftChild) {<br>        st.push(st.leftChild);<br>      }<br>    }<br>  }</p>
 <ol start="2">
-<li><p>中序遍历<br>左子树 -&gt; 根 -&gt; 右子树</p>
-<ul>
-<li>递归<br>function DFS3(root) {<br>if(!root) return null;<br>DFS3(root.leftChild);<br>console.log(root.val);<br>DFS3(root.rightChild);<br>}</li>
-<li>非递归<br>function DFS4(root) {<br>if(!root) return null;<br>const st = [];<br>let cur = root;<br>while(cur || st.length &gt; 0) {<br> if(cur) {<br>   st.push(cur);<br>   cur = cur.leftChild;<br> } else {<br>   const top = st.pop();<br>   console.log(top.val);<br>   cur = top.rightChild;<br> }<br>}<br>}</li>
-</ul>
-</li>
-<li><p>后序遍历<br>左子树 -&gt; 右子树 -&gt; 根 </p>
-<ul>
-<li>递归<br>function DFS5(root) {<br>if(!root) return null;<br>DFS5(root.leftChild);<br>DFS5(root.rightChild);<br>console.log(root.val);<br>}</li>
-<li>非递归<br>function DFS6(root) {<br>if(!root) return null;<br>const st = [];<br>let cur = root;<br>while(cur || st.length) {<br> if(cur) {<br>   st.push(cur);<br>   cur = st.leftChild;<br> } else {<br>   const top = st.pop();<br>   if(top.visit) {<pre><code>console.log(top.val);
-cur = null;        
-</code></pre>   } else {<pre><code>st.push(top);
-cur = top.rightChild;
-</code></pre>   }<br> }<br>}<br>}</li>
-</ul>
-</li>
+<li>中序遍历<br>左子树 -&gt; 根 -&gt; 右子树</li>
 </ol>
+<ul>
+<li><p>递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function DFS3(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  DFS3(root.leftChild);</span><br><span class="line">  console.log(root.val);</span><br><span class="line">  DFS3(root.rightChild);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function DFS4(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  const st = [];</span><br><span class="line">  let cur = root;</span><br><span class="line">  while(cur || st.length &gt; 0) &#123;</span><br><span class="line">    if(cur) &#123;</span><br><span class="line">      st.push(cur);</span><br><span class="line">      cur = cur.leftChild;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      const top = st.pop();</span><br><span class="line">      console.log(top.val);</span><br><span class="line">      cur = top.rightChild;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="3">
+<li>后序遍历<br>左子树 -&gt; 右子树 -&gt; 根 </li>
+</ol>
+<ul>
+<li><p>递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function DFS5(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  DFS5(root.leftChild);</span><br><span class="line">  DFS5(root.rightChild);</span><br><span class="line">  console.log(root.val);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>非递归</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">function DFS6(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  const st = [];</span><br><span class="line">  let cur = root;</span><br><span class="line">  while(cur || st.length) &#123;</span><br><span class="line">    if(cur) &#123;</span><br><span class="line">      st.push(cur);</span><br><span class="line">      cur = st.leftChild;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      const top = st.pop();</span><br><span class="line">      if(top.visit) &#123;</span><br><span class="line">        console.log(top.val);</span><br><span class="line">        cur = null;        </span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        st.push(top);</span><br><span class="line">        cur = top.rightChild;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <h3 id="广度优先遍历-BFS-Breadth-First-Search"><a href="#广度优先遍历-BFS-Breadth-First-Search" class="headerlink" title="广度优先遍历 BFS( Breadth First Search )"></a>广度优先遍历 BFS( Breadth First Search )</h3><p>  即层次遍历</p>
 <ul>
-<li>非递归<br>function BFS1 (root) {<br>if(!root) return null;<br>const q = [root];<br>while(q.length &gt; 0) {<br>  const f = q.pop();<br>  console.log(f.val);<br>  if(q.leftChild) {<pre><code>q.unshift(q.leftChild);
-</code></pre>  }<br>  if(q.rightChild) {<pre><code>q.unshift(q.rightChild);
-</code></pre>  }<br>}<br>}</li>
+<li>非递归<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function BFS1 (root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  const q = [root];</span><br><span class="line">  while(q.length &gt; 0) &#123;</span><br><span class="line">    const f = q.pop();</span><br><span class="line">    console.log(f.val);</span><br><span class="line">    if(q.leftChild) &#123;</span><br><span class="line">      q.unshift(q.leftChild);</span><br><span class="line">    &#125;</span><br><span class="line">    if(q.rightChild) &#123;</span><br><span class="line">      q.unshift(q.rightChild);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 
       
