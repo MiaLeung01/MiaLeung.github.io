@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="树,">
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="Mia 的个人网站，关于 Mia 的日常工作，前端技术，还有生活分享等">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
+<meta name="keywords" content="树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树遍历">
+<meta property="og:url" content="http://yoursite.com/2019/02/24/二叉树遍历1/index.html">
 <meta property="og:site_name" content="Mia 豆豆&#39;s Blog">
-<meta property="og:description" content="Mia 的个人网站，关于 Mia 的日常工作，前端技术，还有生活分享等">
+<meta property="og:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
 <meta property="og:locale" content="cn">
-<meta property="og:updated_time" content="2019-01-31T09:36:54.000Z">
+<meta property="og:updated_time" content="2019-02-24T01:53:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tags">
-<meta name="twitter:description" content="Mia 的个人网站，关于 Mia 的日常工作，前端技术，还有生活分享等">
+<meta name="twitter:title" content="二叉树遍历">
+<meta name="twitter:description" content="深度优先遍历 DFS( Depth First Search ) 前序遍历根 -&amp;gt; 左子树 -&amp;gt; 右子树 递归123456function DFS1(root) &amp;#123;  if(!root) return null;  console.log(root.val);  DFS1(root.left);  DFS1(root.right);&amp;#125;       -非递归  fun">
 
 
 
@@ -133,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/">
+  <link rel="canonical" href="http://yoursite.com/2019/02/24/二叉树遍历1/">
 
 
 
 
 
-  <title>Tags | Mia 豆豆's Blog</title>
+  <title>二叉树遍历 | Mia 豆豆's Blog</title>
   
 
 
@@ -281,40 +282,197 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/二叉树遍历1/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">Tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                11 tags in total
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/Leetcode/" style="font-size: 12px; color: #ccc">Leetcode</a> <a href="/tags/http/" style="font-size: 12px; color: #ccc">http</a> <a href="/tags/react/" style="font-size: 12px; color: #ccc">react</a> <a href="/tags/个人生活/" style="font-size: 12px; color: #ccc">个人生活</a> <a href="/tags/好书/" style="font-size: 12px; color: #ccc">好书</a> <a href="/tags/导出/" style="font-size: 12px; color: #ccc">导出</a> <a href="/tags/文章/" style="font-size: 12px; color: #ccc">文章</a> <a href="/tags/日常刨根问底/" style="font-size: 12px; color: #ccc">日常刨根问底</a> <a href="/tags/树/" style="font-size: 12px; color: #ccc">树</a> <a href="/tags/逻辑思维/" style="font-size: 12px; color: #ccc">逻辑思维</a> <a href="/tags/面试题/" style="font-size: 12px; color: #ccc">面试题</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">二叉树遍历</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-24T09:05:21+08:00">
+                2019-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h3 id="深度优先遍历-DFS-Depth-First-Search"><a href="#深度优先遍历-DFS-Depth-First-Search" class="headerlink" title="深度优先遍历 DFS( Depth First Search )"></a>深度优先遍历 DFS( Depth First Search )</h3><ol>
+<li>前序遍历<br>根 -&gt; 左子树 -&gt; 右子树<ul>
+<li>递归<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function DFS1(root) &#123;</span><br><span class="line">  if(!root) return null;</span><br><span class="line">  console.log(root.val);</span><br><span class="line">  DFS1(root.left);</span><br><span class="line">  DFS1(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<p>  -非递归<br>  function DFS2(root) {<br>    if(!root) return null;<br>    const st = [root];<br>    while(st.length&gt;0) {<br>      const top = st.pop();<br>      console.log(top.val);<br>      if(st.rightChild) {<br>        st.push(st.rightChild);<br>      }<br>      if(st.leftChild) {<br>        st.push(st.leftChild);<br>      }<br>    }<br>  }</p>
+<ol start="2">
+<li><p>中序遍历<br>左子树 -&gt; 根 -&gt; 右子树</p>
+<ul>
+<li>递归<br>function DFS3(root) {<br>if(!root) return null;<br>DFS3(root.leftChild);<br>console.log(root.val);<br>DFS3(root.rightChild);<br>}</li>
+<li>非递归<br>function DFS4(root) {<br>if(!root) return null;<br>const st = [];<br>let cur = root;<br>while(cur || st.length &gt; 0) {<br> if(cur) {<br>   st.push(cur);<br>   cur = cur.leftChild;<br> } else {<br>   const top = st.pop();<br>   console.log(top.val);<br>   cur = top.rightChild;<br> }<br>}<br>}</li>
+</ul>
+</li>
+<li><p>后序遍历<br>左子树 -&gt; 右子树 -&gt; 根 </p>
+<ul>
+<li>递归<br>function DFS5(root) {<br>if(!root) return null;<br>DFS5(root.leftChild);<br>DFS5(root.rightChild);<br>console.log(root.val);<br>}</li>
+<li>非递归<br>function DFS6(root) {<br>if(!root) return null;<br>const st = [];<br>let cur = root;<br>while(cur || st.length) {<br> if(cur) {<br>   st.push(cur);<br>   cur = st.leftChild;<br> } else {<br>   const top = st.pop();<br>   if(top.visit) {<pre><code>console.log(top.val);
+cur = null;        
+</code></pre>   } else {<pre><code>st.push(top);
+cur = top.rightChild;
+</code></pre>   }<br> }<br>}<br>}</li>
+</ul>
+</li>
+</ol>
+<h3 id="广度优先遍历-BFS-Breadth-First-Search"><a href="#广度优先遍历-BFS-Breadth-First-Search" class="headerlink" title="广度优先遍历 BFS( Breadth First Search )"></a>广度优先遍历 BFS( Breadth First Search )</h3><p>  即层次遍历</p>
+<ul>
+<li>非递归<br>function BFS1 (root) {<br>if(!root) return null;<br>const q = [root];<br>while(q.length &gt; 0) {<br>  const f = q.pop();<br>  console.log(f.val);<br>  if(q.leftChild) {<pre><code>q.unshift(q.leftChild);
+</code></pre>  }<br>  if(q.rightChild) {<pre><code>q.unshift(q.rightChild);
+</code></pre>  }<br>}<br>}</li>
+</ul>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/树/" rel="tag"># 树</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/17/【面题】CSS/" rel="next" title="【面题】CSS">
+                <i class="fa fa-chevron-left"></i> 【面题】CSS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -347,8 +505,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image" src="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg" alt="Mia Leung">
           <p class="site-author-name" itemprop="name">Mia Leung</p>
@@ -432,6 +599,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#深度优先遍历-DFS-Depth-First-Search"><span class="nav-number">1.</span> <span class="nav-text">深度优先遍历 DFS( Depth First Search )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#广度优先遍历-BFS-Breadth-First-Search"><span class="nav-number">2.</span> <span class="nav-text">广度优先遍历 BFS( Breadth First Search )</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -564,10 +747,10 @@
 
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
