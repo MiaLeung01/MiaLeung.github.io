@@ -294,6 +294,771 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/兼容 IE8 的那些事/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/27/兼容 IE8 的那些事/" itemprop="url">兼容 IE8 的那些事</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-27T20:17:55+08:00">
+                2019-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/兼容性/" itemprop="url" rel="index">
+                    <span itemprop="name">兼容性</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>  这几天在写一个填写个人信息的表单，要求兼容到 IE8，踩了几个坑，记录下：</p>
+<ol>
+<li>获取URL参数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function GetQueryString(name) &#123;  </span><br><span class="line">  var reg = new RegExp(&quot;(^|&amp;)&quot; + name + &quot;=([^&amp;]*)(&amp;|$)&quot;, &quot;i&quot;);  </span><br><span class="line">  var r = window.location.search.substr(1).match(reg);  //获取url中&quot;?&quot;符后的字符串并正则匹配</span><br><span class="line">  var context = &quot;&quot;;  </span><br><span class="line">  if (r != null)  </span><br><span class="line">       context = r[2];  </span><br><span class="line">  reg = null;  </span><br><span class="line">  r = null;  </span><br><span class="line">  return context == null || context == &quot;&quot; || context == &quot;undefined&quot; ? &quot;&quot; : context;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><code>(^|&amp;)</code> 匹配字符串开头或者&amp;字符，如果其后还有正则，那么必须出现在字符串开始或&amp;字符之后</p>
+<ol start="2">
+<li><p>图片上传并转成 base64 格式， 兼容 IE8<br>（1）文件清空删除<br>选择一个图片后，删除图片，无法重新选择同一张图片。因为没有触发 input 的 change 事件，所以要重置 input 的值，或者删除 input 节点，添加一个新节点。 IE11 以下不支持文件重置值（我试了 $(node).val(‘’) 和原生的 document.getElementById(node).value = ‘’ 都不生效）<br>// 兼容 IE8</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var file = $(this.imgFile)</span><br><span class="line">file.after(file.clone().val(&quot;&quot;));</span><br><span class="line">file.remove();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">// IE base64 转换</span><br><span class="line">// 这里有个坑，ie 在非本地环境打开本地文件会报 **&quot;没有权限&quot;**（因为跨域了），所以直接把 node 节点传给 xmlHttp  </span><br><span class="line">ieBase64: function(file, ele, width, height, func)&#123;</span><br><span class="line">    var xmlHttp, xml_dom, tmpNode, imgBase64Data;</span><br><span class="line">    xmlHttp = new ActiveXObject(&quot;MSXML2.XMLHTTP&quot;);</span><br><span class="line">    xmlHttp.open(&quot;POST&quot;,file, false);</span><br><span class="line">    xmlHttp.send(&quot;&quot;);</span><br><span class="line">    xml_dom = new ActiveXObject(&quot;MSXML2.DOMDocument&quot;);</span><br><span class="line">    tmpNode = xml_dom.createElement(&quot;tmpNode&quot;);</span><br><span class="line">    tmpNode.dataType = &quot;bin.base64&quot;;</span><br><span class="line">    tmpNode.nodeTypedValue = xmlHttp.responseBody;</span><br><span class="line">    imgBase64Data = &quot;data:image/jpg;base64,&quot; + tmpNode.text.replace(/\n/g,&quot;&quot;);</span><br><span class="line">    ele.innerHTML=&quot;&lt;img src=&apos;&quot;+file.value+&quot;&apos; width=&apos;&quot;+width+&quot;&apos; height=&apos;&quot;+height+&quot;&apos; alt=&apos;&quot; + file.value + &quot;&apos;/&gt;&quot; ; //渲染图片</span><br><span class="line">    func(imgBase64Data);</span><br><span class="line">    // 重置，使其能选同样文件</span><br><span class="line">             </span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line">// 主流浏览器支持 FileReader</span><br><span class="line"> mainBase64: function(file, ele, width, height, func)&#123;</span><br><span class="line">  var fileReader, imgData;</span><br><span class="line">  fileReader = new FileReader();  </span><br><span class="line">    fileReader.readAsDataURL(file);  </span><br><span class="line">    fileReader.onload = function () &#123;  </span><br><span class="line">        imgData = this.result; //base64数据</span><br><span class="line">        ele.innerHTML = &quot;&lt;img src=&apos;&quot;+imgData+&quot;&apos; width=&apos;&quot;+width+&quot;&apos; height=&apos;&quot;+height+&quot;&apos;/&gt;&quot;; //渲染图片</span><br><span class="line">        func(imgData);              </span><br><span class="line">    &#125;</span><br><span class="line">    // 重置，使其能选同样文件          </span><br><span class="line">    $(file).val(&apos;&apos;);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>（2）base64 编码的图片提交的时候数据很大的问题<br>   对Post请求来说，数据是没有大小限制的，只是取决于服务器的配置。<br>   解决办法一是对 base64 进行压缩，二是修改服务器配置</p>
+</li>
+<li><p>原生js<br>（1）获取节点的前一个兄弟 previousElementSibling is not supported until IE9.<br>兼容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if(!(&quot;previousElementSibling&quot; in document.documentElement))&#123;</span><br><span class="line">  Object.defineProperty(Element.prototype, &quot;previousElementSibling&quot;, &#123;</span><br><span class="line">    get: function()&#123;</span><br><span class="line">      var e = this.previousSibling;</span><br><span class="line">      while(e &amp;&amp; 1 !== e.nodeType)</span><br><span class="line">        e = e.previousSibling;</span><br><span class="line">      return e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">* e.nodeType == 1  表明是元素节点， 3是文本</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>p.s. <code>previousElementSibling</code> 和 <code>previousSibling</code> 区别，前一个是获取元素前一个元素，后一个是获取元素前一个节点（文本或元素）</p>
+<p>（2）Object.keys(obj) IE9 及以上才支持，替代<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for(key in obj) &#123;</span><br><span class="line">  console.log(obj[key]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol start="4">
+<li><p>Jqurey<br>-【坑】jq 版本2以上不支持 IE8<br>jq 选择器：</p>
+<p>(1) 获取选中的项  <code>$(&quot;input[name=&#39;&quot; + name +&quot;&#39;]:checked&quot;).val()</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 获取、设置相应 name 的 radio 值</span><br><span class="line">function getRadioValue(name)&#123;</span><br><span class="line">  var selector = &quot;input[name=&apos;&quot; + name +&quot;&apos;]:checked&quot;</span><br><span class="line">  var val = $(selector).val();</span><br><span class="line">  return val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(2) 设置选中的项  <code>$(node).prop(&#39;checked&#39;, true)</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function setRadioValue(node, val) &#123;</span><br><span class="line">  for(var k=0;k&lt;node.length; k++) &#123;</span><br><span class="line">    if($(node[k]).val() === val) &#123;</span><br><span class="line">      $(node[k]).prop(&apos;checked&apos;, true);</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>（3）$(node).empty() 清空 node 所有子元素<br>（4）$(node).val() 获取/设置 value<br>（5）$(node).append(node1) 插入子元素<br>（6）$(node).addClass(‘className’); 增加 class<br>（7）$(node).attr(‘name’) 获取元素的属性<br>（8）$(node).change(func(e){}) $(node).click(func(e){})<br>    // todo 分析下 e 里面的属性，  e.target， e.traget.id<br>（9）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url: &apos;url&apos;,  </span><br><span class="line">  type: &quot;POST&quot;, // method  &apos;GET&apos; / &apos;POST&apos;</span><br><span class="line">  dataType: &apos;json&apos;,</span><br><span class="line">  contentType: &apos;application/json&apos;,</span><br><span class="line">  data: JSON.stringify(data),</span><br><span class="line">  success: function(res, status, xhr)&#123;</span><br><span class="line">    if(res.status === 0) &#123;</span><br><span class="line">      console.log(&apos;提交成功&apos;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      console.log(res.msg);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  error: function(xhr, status, error)&#123;</span><br><span class="line">    console.log(error.msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$.getJSON(&quot;/a/b/c&quot;, data, function(res) &#123;</span><br><span class="line">  if(res.status === 0) &#123;</span><br><span class="line">    console.log(&apos;请求成功&apos;);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    alert(res.msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">$.post(&apos;/a/b/c&apos;, data, function(res, status) &#123;</span><br><span class="line">  console.log(&apos;res&apos;, res);</span><br><span class="line">  if(res.status === 0) &#123;</span><br><span class="line">    // 做点什么</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    // 做点什么</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>（10）防止事件重复绑定</p>
+<p>  off()、on()方法[ie 不支持]<br>  one()方法 [ie 里不好使]<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  // bind()、unbind()方法</span><br><span class="line">　$(&quot;#btn1&quot;).unbind(&quot;click&quot;).bind(&quot;click&quot;,function()&#123;</span><br><span class="line">     　 alert(&quot;我是btn1！&quot;);</span><br><span class="line">　　&#125;);</span><br><span class="line"></span><br><span class="line">//live()、die()方法</span><br><span class="line">// jQuery1.3增加了一个live()方法，给所有当前以及将来会匹配的元素绑定一个事件处理函数。</span><br><span class="line">// 支持：click,dblclick, mousedown, mouseup等。</span><br><span class="line">// 不支持 ：blur, focus, mouseenter, mouseleave, change, submit。</span><br><span class="line">// live()一次只能绑定一个事件。T</span><br><span class="line">// jquery利用了事件的冒泡机制，直接把事件绑定在了document上，然后通过event.target找出事件的来源。</span><br><span class="line">// 要移除用live绑定的事件，请用die()方法</span><br><span class="line"> 　$(&quot;#btn1&quot;).die(&quot;click&quot;).live(&quot;click&quot;,function() &#123;</span><br><span class="line">    alert(&quot;我是btn1！&quot;);</span><br><span class="line">　　&#125;);</span><br></pre></td></tr></table></figure></p>
+<ol start="5">
+<li>IE8 奇葩问题</li>
+</ol>
+<p>IE8 中，如果<code>button</code> 不加 <code>type=&#39;button&#39;</code> 并放在 <code>form</code> 表单中<br>那么 ie8就会自动把它变成了 <code>submit</code>，点击绑定的事件将不会执行，而且会刷新页面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button type=&quot;submit&quot;&gt;确定&lt;/button&gt;</span><br></pre></td></tr></table></figure></p>
+<p>解决办法是：明确加入 <code>type=&#39;button&#39;</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/13/【面题】JavaScript/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/13/【面题】JavaScript/" itemprop="url">【面题】JavaScript</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-13T19:12:26+08:00">
+                2019-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试题/" itemprop="url" rel="index">
+                    <span itemprop="name">面试题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>什么是防抖和节流？有什么区别？如何实现？</li>
+</ol>
+<p>防抖:动作绑定事件，动作发生后一定时间后触发事件，在这段时间内，如果该动作又发生，则重新等待一定时间再触发事件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function debounce(func, time) &#123;</span><br><span class="line">  let timer = null;</span><br><span class="line">  return () =&gt; &#123;</span><br><span class="line">    clearTimeout(timer);</span><br><span class="line">    timer = setTimeout(()=&gt; &#123;</span><br><span class="line">      func.apply(this, arguments)</span><br><span class="line">    &#125;, time);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>  节流:动作绑定事件，动作发生后一段时间后触发事件，在这段时间内，如果动作又发生，则无视该动作，直到事件执行完后，才能重新触发。<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function throtte(func, time)&#123;</span><br><span class="line">  let activeTime = 0;</span><br><span class="line">  return () =&gt; &#123;</span><br><span class="line">    const current = Date.now();</span><br><span class="line">    if(current - activeTime &gt; time) &#123;</span><br><span class="line">      func.apply(this, arguments);</span><br><span class="line">      activeTime = Date.now();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>介绍下深度优先遍历和广度优先遍历，如何实现？<br>深度优先遍历</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/git100个问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/06/git100个问题/" itemprop="url">git100个问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T18:21:52+08:00">
+                2019-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作中碰到的问题/" itemprop="url" rel="index">
+                    <span itemprop="name">工作中碰到的问题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>git 修改分支名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#1 将本地分支进行改名</span><br><span class="line">git branch -m old_branch new_branch</span><br><span class="line">#2 将远程分支的老分支删除</span><br><span class="line">git push origin :old_branch</span><br><span class="line">#3 将改名后的分支push到远程</span><br><span class="line">git push origin new_branch</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>p.s.<br>  git没有提供远程分支删除的命令, 所以git换用push来实现<br>  推送的命令是:<br>  git push origin master : my-branch<br>  意思为: 将本地的master分支推送到远程的my-branch分支, 如果把本地分支的部分去掉, 就变成:<br>  git push origin : my-branch<br>  这一句的意思是, 将”空内容”推送到远程的my-branch分支, 也就是把这个分支删掉了</p>
+<ol start="2">
+<li>撤销一次提交</li>
+</ol>
+<ol>
+<li>在更新的时候，React 会根据组件的 key 来决定是否重新渲染。state 更新时，React 对比组件前后的变化，如果 key 相同并且没有变化，将不会重新渲染；如果 key 改变了，直接重新渲染。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/06/工作中碰到的问题/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/06/工作中碰到的问题/" itemprop="url">工作中碰到的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-06T16:13:52+08:00">
+                2019-03-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/工作中碰到的问题/" itemprop="url" rel="index">
+                    <span itemprop="name">工作中碰到的问题</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>新项目，上游依赖下游</li>
+<li></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/浏览器/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mia Leung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mia 豆豆's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/24/浏览器/" itemprop="url">浏览器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-24T21:52:07+08:00">
+                2019-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/浏览器/" itemprop="url" rel="index">
+                    <span itemprop="name">浏览器</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="跨标签页通信的方法-https-www-jianshu-com-p-bef29d8e4f47"><a href="#跨标签页通信的方法-https-www-jianshu-com-p-bef29d8e4f47" class="headerlink" title="跨标签页通信的方法 https://www.jianshu.com/p/bef29d8e4f47"></a>跨标签页通信的方法 <a href="https://www.jianshu.com/p/bef29d8e4f47" target="_blank" rel="noopener">https://www.jianshu.com/p/bef29d8e4f47</a></h2><ol>
+<li>Html5 postMessage</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/二叉树遍历1/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -838,7 +1603,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/1月读过的书/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/1月读过的书.1/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mia Leung">
@@ -857,7 +1622,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/01/31/1月读过的书/" itemprop="url">1月读过的书</a></h1>
+                <a class="post-title-link" href="/2019/01/31/1月读过的书.1/" itemprop="url">1月读过的书</a></h1>
         
 
         <div class="post-meta">
@@ -1159,749 +1924,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/31/Question/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mia Leung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mia 豆豆's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/31/Question/" itemprop="url">Question</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-31T18:36:38+08:00">
-                2019-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/豆豆的日常/" itemprop="url" rel="index">
-                    <span itemprop="name">豆豆的日常</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="提高逻辑思维能力练习"><a href="#提高逻辑思维能力练习" class="headerlink" title="提高逻辑思维能力练习"></a>提高逻辑思维能力练习</h1><h2 id="第一类："><a href="#第一类：" class="headerlink" title="第一类："></a>第一类：</h2><ol>
-<li>人在哪些场合下会哭？请列举出尽可能多的不互相重复的答案。</li>
-<li>短信诈骗有哪些方法？请列举出尽可能多的不互相重复的答案。</li>
-</ol>
-<p>解答第一类问题，你会发现最有效的方法是先分类，然后一一列举。哪些场合会哭？随便举一个分法，可以分为一个人的场合，两个人的场合，多个人的场合。一个人的场合什么时候会哭？挂科，失恋，喝醉，生病，etc。两个人的场合什么时候会哭？吵架，被骂，被感动，etc。如此类推。如果不分类，要么列举得很慢，要么列举不全，要么列举出重复的答案。这就是人们常说的 MECE ：Mutually Exclusive, Collectively Exhaustive. 做到这一点，分类的功夫就差不多了。</p>
-<h2 id="第二类："><a href="#第二类：" class="headerlink" title="第二类："></a>第二类：</h2><ol>
-<li>不用纸笔，不查资料，估算一下中国人每天说多少句 “傻逼” ？</li>
-<li>条件同上，估算一下淘宝一年卖出多少个避孕套？</li>
-</ol>
-<p>要解答第二类问题，你会发现需要进行一系列的假设，最后用 A x B x (C + D) x (E + F + G) 这样的形式来解答。中国人一年说多少句傻逼？把中国人先按年龄层分成几段：0-15， 15-30,，30-45,45-60，60以上。假设每个年龄层3亿人（随便设一个）。0-15 大约是不会说的。60以上也不用考虑。45-60 的人每天说10次，30-45 的人每天大概说20次，15-30 每天大约 30次。那么答案就是 3亿 x 10 + 3亿 x 20 + 3亿 x 30 = 180亿次/日。这题比较简单。但要算的更精细有哪些办法？可以分南方人，北方人，分城市人，农村人，受教育程度高的，受教育程度低的，分职业，等等，一步步细分，一步步估算。</p>
-<h2 id="第三类："><a href="#第三类：" class="headerlink" title="第三类："></a>第三类：</h2><ol>
-<li>我开了一家包子店，包子却卖不出去，该怎么办？请给出应对各种可能的完整解决方案。</li>
-<li>有一家门户网站，流量不高，该怎么提高流量？请给出应对各种可能的完整解决方案。</li>
-</ol>
-<p>解答第三类问题就是第一类和第二类的结合。包子卖不出去可能有哪些原因？这是第一类问题。原因可分成两大类：供应和需求。供应方面，包子口味如何？质量如何？价格如何？新鲜否？需求方面，本地区有人否？这些人吃包子否？这些人习惯到包子店买包子否？等等。针对每一个子问题，如何得到一个解决方案，比如，本地区有多少人吃包子？这就回到了第二类问题。</p>
-<p>这就是我认为最有效的练习方式。可以发现，逻辑思维不是知识，你可以任何时候，用任何素材来练习。它是一种方法，让你可以不留缝隙的解决各类无头绪的问题。习惯了这样的解析方式，碰到复杂的问题你也不会慌。如果有人问你，中国明年的房地产形势会如何？照着模式一步一步解就可以了，答案不一定会多准，但至少你有个概念。</p>
-<p>作者：周杰<br>链接：<a href="https://www.zhihu.com/question/19599216/answer/15828811" target="_blank" rel="noopener">https://www.zhihu.com/question/19599216/answer/15828811</a><br>来源：知乎<br>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<h3 id="自己找问题自己回答系列"><a href="#自己找问题自己回答系列" class="headerlink" title="自己找问题自己回答系列"></a>自己找问题自己回答系列</h3><h4 id="和陌生人聊天的话题有哪些呢？"><a href="#和陌生人聊天的话题有哪些呢？" class="headerlink" title="和陌生人聊天的话题有哪些呢？"></a>和陌生人聊天的话题有哪些呢？</h4><ol>
-<li>个人生活<ul>
-<li>精神世界<ul>
-<li>三观</li>
-<li>信仰</li>
-<li>政治立场</li>
-<li>心理状况</li>
-<li>书、电影、电视</li>
-<li>偶像</li>
-</ul>
-</li>
-<li>物理世界<ul>
-<li>个人信息</li>
-<li>兴趣爱好</li>
-<li>美食</li>
-<li>旅游</li>
-<li>游戏</li>
-<li>运动</li>
-<li>美妆护肤</li>
-<li>淘宝</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>社会新闻<ul>
-<li>政治</li>
-<li>经济</li>
-<li>军事</li>
-<li>体育</li>
-<li>生活趣闻</li>
-</ul>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/03/Expression/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mia Leung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mia 豆豆's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/03/Expression/" itemprop="url">Regular Expression</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-03T17:28:01+08:00">
-                2019-01-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Regular-Expression"><a href="#Regular-Expression" class="headerlink" title="Regular Expression"></a>Regular Expression</h3><h4 id="Special-Characters-in-Regular-Expression"><a href="#Special-Characters-in-Regular-Expression" class="headerlink" title="Special Characters in Regular Expression"></a>Special Characters in Regular Expression</h4><ol>
-<li><code>\</code>    A backslash that precedes a non-special character indicates that the next character is special and is not to be interpreted literally.</li>
-<li><code>*</code>     Matches the preceding expression 0 or more times. Equivalent to {0,}.</li>
-<li><code>+</code>    Matches the preceding expression 1 or more times. Equivalent to {1, }.</li>
-<li><code>?</code>    Matches the preceding expression 0 or 1 time. Equivalent to {0, 1}.</li>
-<li><code>.</code>    (The decimal point) matches any single character except the newline character.</li>
-<li></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/02/20190102/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mia Leung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mia 豆豆's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/02/20190102/" itemprop="url">20190102</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-02T00:37:49+08:00">
-                2019-01-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/31/LeetCode-之路/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mia Leung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mia 豆豆's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/31/LeetCode-之路/" itemprop="url">LeetCode 之路</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-31T00:37:49+08:00">
-                2018-12-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
-                    <span itemprop="name">学习笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol start="14">
-<li>最长公共前缀<br>编写一个函数来查找字符串数组中的最长公共前缀，如果不存在公共前缀，返回空字符串 “”。</li>
-</ol>
-<p>示例 1:<br>输入: [“flower”,”flow”,”flight”]<br>输出: “fl”</p>
-<p>示例 2:<br>输入: [“dog”,”racecar”,”car”]<br>输出: “”<br>解释: 输入不存在公共前缀。<br>说明:</p>
-<p>所有输入只包含小写字母 a-z 。</p>
-<p>/**</p>
-<ul>
-<li>@param {string[]} strs</li>
-<li>@return {string}<br>*/<br>var longestCommonPrefix = function(strs) {<br> if(strs.length == 0) {<pre><code>return &apos;&apos;;
-</code></pre> }<br> var result = ‘’;<br> var curStr = strs[0];<br> for(var i=0; i&lt; curStr.length; i++) {<pre><code>curChar = curStr[i];
-for(var j=1; j &lt; strs.length; j++ ) {
-    if(curChar != strs[j][i]) {
-        return result;
-    }
-}
-result += curChar;
-</code></pre> }<br> return result;</li>
-</ul>
-<p>};</p>
-<p>我好笨啊，好累啊。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/29/Happy-2019/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mia Leung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://img-1258603691.cos-website.ap-chengdu.myqcloud.com/image/avatar.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Mia 豆豆's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/29/Happy-2019/" itemprop="url">Happy 2019</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-12-29T17:59:30+08:00">
-                2018-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/豆豆的日常/" itemprop="url" rel="index">
-                    <span itemprop="name">豆豆的日常</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1943,7 +1972,7 @@ result += curChar;
           
             <div class="site-state-item site-state-posts">
               <a href="/">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1954,7 +1983,7 @@ result += curChar;
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -1965,7 +1994,7 @@ result += curChar;
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
